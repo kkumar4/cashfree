@@ -1,7 +1,20 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 
-const CheckboxGroup = ({ name, label, options, selected = [] }) => {
-  const [checkedValues, setCheckedValues] = useState(selected);
+import { FiltersContext } from '../App';
+import { FILTER_ACTIONS } from '../hooks';
+
+const CheckboxGroup = ({ name, label, options, selected = [], newSelected = [] }) => {
+
+  const dispatch = useContext(FiltersContext)[1];
+  useEffect(() => {
+    dispatch({
+      type: FILTER_ACTIONS.SET_NEW_VALUE,
+      payload: {
+        name,
+        newValue: selected
+      }
+    })
+  }, []);
 
   return (
     <div>
@@ -12,15 +25,27 @@ const CheckboxGroup = ({ name, label, options, selected = [] }) => {
           const handleChange = event => {
             const checked = event.target.checked;
             if (checked) {
-              setCheckedValues([...checkedValues, id]);
+              dispatch({
+                type: FILTER_ACTIONS.SET_NEW_VALUE,
+                payload: {
+                  name,
+                  newValue: [...newSelected, id]
+                }
+              })
             } else {
-              setCheckedValues(checkedValues.filter(checkedItem => checkedItem !== id));
+              dispatch({
+                type: FILTER_ACTIONS.SET_NEW_VALUE,
+                payload: {
+                  name,
+                  newValue: newSelected.filter(checkedItem => checkedItem !== id)
+                }
+              })
             }
           }
 
           return (
             <div key={id} className='checkbox'>
-              <input id={id} onChange={handleChange} checked={checkedValues.includes(id)} type='checkbox' value={value} />
+              <input id={id} onChange={handleChange} checked={newSelected.includes(id)} type='checkbox' value={value} />
               <label htmlFor={id}>{value}</label>
             </div>
           )

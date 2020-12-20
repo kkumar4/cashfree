@@ -7,7 +7,7 @@ const Modal = ({ modalCloseHandler, children }) => {
 
     function windowClickHandler(event) {
 
-      if (!modalContentRef.current.contains(event.target)) {
+      if (modalContentRef.current && !modalContentRef.current.contains(event.target)) {
         modalCloseHandler();
       }
     }

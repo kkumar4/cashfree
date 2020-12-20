@@ -5,7 +5,3 @@ export const FILTER_TYPES = {
   RADIO_GROUP: 'radio group',
   SELECT: 'select'
 }
-
-export const FILTER_ACTIONS = {
-  CLEAR_ALL: 'CLEAR_ALL',
-}

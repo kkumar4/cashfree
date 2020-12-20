@@ -27,10 +27,6 @@ const Trigger = () => {
       return appliedFiltersCount;
     }, 0);
     setAppliedFiltersCount(appliedFiltersCount);
-    // whenever there is a change in filters data, 
-    // which is possible either through the clear all 
-    // or apply filters button, hide the modal
-    setIsFiltersModalOpen(false);
   }, [filters]);
 
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);

@@ -8,7 +8,7 @@ const FiltersModal = ({ modalCloseHandler }) => {
   return (
     <Modal modalCloseHandler={modalCloseHandler}>
       <Filters />
-      <FiltersActionButtons />
+      <FiltersActionButtons modalCloseHandler={modalCloseHandler} />
     </Modal>
   )
 }

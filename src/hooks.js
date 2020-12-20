@@ -1,6 +1,12 @@
 import { useReducer } from 'react';
 
-import { FILTER_TYPES, FILTER_ACTIONS } from './Constants';
+import { FILTER_TYPES } from './Constants';
+
+export const FILTER_ACTIONS = {
+  CLEAR_ALL: 'CLEAR_ALL',
+  SET_NEW_VALUE: 'SET_NEW_VALUE',
+  APPLY_FILTERS: 'APPLY_FILTERS'
+}
 
 export function useFilters() {
   const initialState = [
@@ -8,19 +14,19 @@ export function useFilters() {
       type: FILTER_TYPES.TEXT_INPUT,
       label: 'Name',
       name: 'name',
-      value: 'Kunal'
+      value: ''
     },
     {
       type: FILTER_TYPES.TEXT_INPUT,
       label: 'Age',
       name: 'age',
-      value: '30'
+      value: ''
     },
     {
       type: FILTER_TYPES.TEXT_AREA,
       label: 'About',
       name: 'about',
-      value: 'Some random text'
+      value: ''
     },
     {
       type: FILTER_TYPES.CHECKBOX_GROUP,
@@ -40,7 +46,7 @@ export function useFilters() {
           value: 'Watching Movies'
         },
       ],
-      selected: ['Hobbies-1', 'Hobbies-2']
+      selected: []
     },
     {
       type: FILTER_TYPES.RADIO_GROUP,
@@ -56,7 +62,7 @@ export function useFilters() {
           value: 'Female'
         }
       ],
-      selected: 'gender-0'
+      selected: ''
     },
     {
       type: FILTER_TYPES.SELECT,
@@ -84,7 +90,7 @@ export function useFilters() {
           value: 'Kolkata',
         }
       ],
-      selected: 'city-1'
+      selected: ''
     }
   ];
 
@@ -106,6 +112,41 @@ export function useFilters() {
             return {
               ...filter,
               selected: ''
+            }
+          } else {
+            return filter;
+          }
+        })
+      }
+      case FILTER_ACTIONS.SET_NEW_VALUE: {
+        const { name, newValue } = action.payload;
+        return state.map(filter => {
+          if (filter.name === name && [FILTER_TYPES.TEXT_INPUT, FILTER_TYPES.TEXT_AREA].includes(filter.type)) {
+            return {
+              ...filter,
+              newValue
+            }
+          } else if (filter.name === name && [FILTER_TYPES.RADIO_GROUP, FILTER_TYPES.SELECT, FILTER_TYPES.CHECKBOX_GROUP].includes(filter.type)) {
+            return {
+              ...filter,
+              newSelected: newValue
+            }
+          } else {
+            return filter;
+          }
+        })
+      }
+      case FILTER_ACTIONS.APPLY_FILTERS: {
+        return state.map(filter => {
+          if ([FILTER_TYPES.TEXT_INPUT, FILTER_TYPES.TEXT_AREA].includes(filter.type)) {
+            return {
+              ...filter,
+              value: filter.newValue
+            }
+          } else if ([FILTER_TYPES.RADIO_GROUP, FILTER_TYPES.SELECT, FILTER_TYPES.CHECKBOX_GROUP].includes(filter.type)) {
+            return {
+              ...filter,
+              selected: filter.newSelected
             }
           } else {
             return filter;

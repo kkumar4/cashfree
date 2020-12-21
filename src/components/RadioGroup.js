@@ -1,30 +1,9 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 
-import { FiltersContext } from '../App';
-import { FILTER_ACTIONS } from '../hooks';
+import { useInput } from '../hooks';
 
 const RadioGroup = ({ label, name, options, selected = '', newSelected = '' }) => {
-
-  const dispatch = useContext(FiltersContext)[1];
-  useEffect(() => {
-    dispatch({
-      type: FILTER_ACTIONS.SET_NEW_VALUE,
-      payload: {
-        name,
-        newValue: selected
-      }
-    })
-  }, []);
-
-  const handleChange = event => {
-    dispatch({
-      type: FILTER_ACTIONS.SET_NEW_VALUE,
-      payload: {
-        name,
-        newValue: event.target.value
-      }
-    })
-  }
+  const handleChange = useInput(name, selected);
 
   return (
     <div>
@@ -43,4 +22,8 @@ const RadioGroup = ({ label, name, options, selected = '', newSelected = '' }) =
   )
 }
 
-export default RadioGroup;
+function areEqual(prevProps, nextProps) {
+  return prevProps.newSelected === nextProps.newSelected;
+}
+
+export default React.memo(RadioGroup, areEqual);

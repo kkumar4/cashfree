@@ -1,20 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 
-import { FiltersContext } from '../App';
-import { FILTER_ACTIONS } from '../hooks';
+import { useInput } from '../hooks';
 
 const Dropdown = ({ label, name, options, selected = '', newSelected = '' }) => {
-
-  const dispatch = useContext(FiltersContext)[1];
-  useEffect(() => {
-    dispatch({
-      type: FILTER_ACTIONS.SET_NEW_VALUE,
-      payload: {
-        name,
-        newValue: selected
-      }
-    })
-  }, []);
+  const handleSelect = useInput(name, selected);
 
   if (!newSelected) {
     options = [
@@ -24,16 +13,6 @@ const Dropdown = ({ label, name, options, selected = '', newSelected = '' }) => 
       },
       ...options
     ]
-  }
-
-  const handleSelect = event => {
-    dispatch({
-      type: FILTER_ACTIONS.SET_NEW_VALUE,
-      payload: {
-        name,
-        newValue: event.target.value
-      }
-    })
   }
 
   return (
@@ -50,4 +29,8 @@ const Dropdown = ({ label, name, options, selected = '', newSelected = '' }) => 
   )
 }
 
-export default Dropdown;
+function areEqual(prevProps, nextProps) {
+  return prevProps.newSelected === nextProps.newSelected;
+}
+
+export default React.memo(Dropdown, areEqual);

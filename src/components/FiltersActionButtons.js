@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 
 import Button from './Button';
-import { FiltersContext } from '../App';
+import { FiltersDispatchContext } from '../App';
 import { FILTER_ACTIONS } from '../hooks';
 
 const FiltersActionButtons = ({ modalCloseHandler }) => {
-  const dispatch = useContext(FiltersContext)[1];
+  const dispatch = useContext(FiltersDispatchContext);
 
   const clearAllClickHandler = () => {
     dispatch({

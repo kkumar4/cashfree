@@ -1,6 +1,7 @@
-import { useReducer } from 'react';
+import { useContext, useEffect, useReducer } from 'react';
 
 import { FILTER_TYPES } from './Constants';
+import { FiltersDispatchContext } from './App';
 
 export const FILTER_ACTIONS = {
   CLEAR_ALL: 'CLEAR_ALL',
@@ -27,6 +28,26 @@ export function useFilters() {
       label: 'About',
       name: 'about',
       value: ''
+    },
+    {
+      type: FILTER_TYPES.CHECKBOX_GROUP,
+      label: 'Languages',
+      name: 'languages',
+      options: [
+        {
+          id: 'language-0',
+          value: 'Hindi'
+        },
+        {
+          id: 'language-1',
+          value: 'English'
+        },
+        {
+          id: 'language-2',
+          value: 'French'
+        },
+      ],
+      selected: []
     },
     {
       type: FILTER_TYPES.CHECKBOX_GROUP,
@@ -89,6 +110,26 @@ export function useFilters() {
           id: 'city-4',
           value: 'Kolkata',
         }
+      ],
+      selected: ''
+    },
+    {
+      type: FILTER_TYPES.SELECT,
+      label: 'Country',
+      name: 'country',
+      options: [
+        {
+          id: 'country-0',
+          value: 'India',
+        },
+        {
+          id: 'country-1',
+          value: 'Singapore',
+        },
+        {
+          id: 'country-2',
+          value: 'USA',
+        },
       ],
       selected: ''
     }
@@ -159,4 +200,32 @@ export function useFilters() {
   }
 
   return useReducer(reducer, initialState);
+}
+
+export function useInput(name, value) {
+  /**
+   * returns the input change handler
+   * sets newValue to value when mounted
+   */
+  const dispatch = useContext(FiltersDispatchContext);
+
+  const setNewValue = _value => {
+    dispatch({
+      type: FILTER_ACTIONS.SET_NEW_VALUE,
+      payload: {
+        name,
+        newValue: _value
+      }
+    })
+  }
+
+  useEffect(() => {
+    setNewValue(value);
+  }, []);
+
+  const handleChange = event => {
+    setNewValue(event.target.value);
+  }
+
+  return handleChange;
 }

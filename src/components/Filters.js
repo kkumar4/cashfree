@@ -4,7 +4,7 @@ import FilterComponent from './FilterComponent';
 import { FiltersContext } from '../App';
 
 const Filters = () => {
-  const [filters] = useContext(FiltersContext);
+  const filters = useContext(FiltersContext);
   return (
     <div className='filters'>
       {filters.map((filter, index) => <FilterComponent key={index} filter={filter} />)}

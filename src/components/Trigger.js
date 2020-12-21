@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 
 import FiltersModal from './FiltersModal';
 import Button from './Button';
@@ -6,7 +6,7 @@ import { FILTER_TYPES } from '../Constants';
 import { FiltersContext } from '../App';
 
 const Trigger = () => {
-  const [filters] = useContext(FiltersContext);
+  const filters = useContext(FiltersContext);
   const [appliedFiltersCount, setAppliedFiltersCount] = useState(0);
 
   useEffect(() => {
@@ -31,9 +31,9 @@ const Trigger = () => {
 
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
 
-  const toggleFiltersModal = () => {
+  const toggleFiltersModal = useCallback(() => {
     setIsFiltersModalOpen(!isFiltersModalOpen);
-  }
+  }, [isFiltersModalOpen]);
 
   return (
     <div className='trigger'>
